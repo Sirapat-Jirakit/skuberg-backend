@@ -13,20 +13,20 @@ model Account {
   email        String        @unique
   passwordHash String
   createdAt    DateTime      @default(now())
-  transactions Transaction[]
+  transactions Trx[]
   wallets      Wallet[]
 }
 
-model Cryptocurrency {
+model Crypto {
   id           Int           @id @default(autoincrement())
   name         String
   symbol       String        @unique
   currentPrice Float
-  transactions Transaction[]
+  transactions Trx[]
   wallets      Wallet[]
 }
 
-model Transaction {
+model Trx {
   id                  Int             @id @default(autoincrement())
   accountId           Int
   cryptoId            Int
@@ -36,7 +36,7 @@ model Transaction {
   timestamp           DateTime        @default(now())
 
   account             Account         @relation(fields: [accountId], references: [id])
-  cryptocurrency      Cryptocurrency  @relation(fields: [cryptoId], references: [id])
+  cryptocurrency      Crypto  @relation(fields: [cryptoId], references: [id])
 }
 
 model Wallet {
@@ -46,7 +46,7 @@ model Wallet {
   balance      Float
 
   account      Account         @relation(fields: [accountId], references: [id])
-  cryptocurrency Cryptocurrency @relation(fields: [cryptoId], references: [id])
+  cryptocurrency Crypto @relation(fields: [cryptoId], references: [id])
 
   @@unique([accountId, cryptoId]) // ensures one crypto per account in wallet
 }

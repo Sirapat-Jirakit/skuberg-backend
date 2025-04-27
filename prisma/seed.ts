@@ -23,7 +23,7 @@ async function main() {
   });
 
   // Seed Cryptocurrencies
-  const bitcoin = await prisma.cryptocurrency.create({
+  const bitcoin = await prisma.crypto.create({
     data: {
       name: 'Bitcoin',
       symbol: 'BTC',
@@ -31,7 +31,7 @@ async function main() {
     },
   });
 
-  const ethereum = await prisma.cryptocurrency.create({
+  const ethereum = await prisma.crypto.create({
     data: {
       name: 'Ethereum',
       symbol: 'ETH',
@@ -40,7 +40,7 @@ async function main() {
   });
 
   // Seed Transactions
-  await prisma.transaction.create({
+  await prisma.trx.create({
     data: {
       accountId: account1.id,
       cryptoId: bitcoin.id,
@@ -50,7 +50,7 @@ async function main() {
     },
   });
 
-  await prisma.transaction.create({
+  await prisma.trx.create({
     data: {
       accountId: account2.id,
       cryptoId: ethereum.id,
