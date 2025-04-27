@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id           Int           @id @default(autoincrement())
+  username     String        @unique
+  email        String        @unique
+  passwordHash String
+  createdAt    DateTime      @default(now())
+  transactions Transaction[]
+  wallets      Wallet[]
+}
+
+model Cryptocurrency {
+  id           Int           @id @default(autoincrement())
+  name         String
+  symbol       String        @unique
+  currentPrice Float
+  transactions Transaction[]
+  wallets      Wallet[]
+}
+
+model Transaction {
+  id                  Int             @id @default(autoincrement())
+  accountId           Int
+  cryptoId            Int
+  transactionType     TransactionType
+  amount              Float
+  priceAtTransaction  Float
+  timestamp           DateTime        @default(now())
+
+  account             Account         @relation(fields: [accountId], references: [id])
+  cryptocurrency      Cryptocurrency  @relation(fields: [cryptoId], references: [id])
+}
+
+model Wallet {
+  id           Int             @id @default(autoincrement())
+  accountId    Int
+  cryptoId     Int
+  balance      Float
+
+  account      Account         @relation(fields: [accountId], references: [id])
+  cryptocurrency Cryptocurrency @relation(fields: [cryptoId], references: [id])
+
+  @@unique([accountId, cryptoId]) // ensures one crypto per account in wallet
+}
+
+enum TransactionType {
+  BUY
+  SELL
+}
