@@ -51,3 +51,9 @@ http://localhost:3000/api
 ```
 
 url : [http://localhost:3000/api](http://localhost:3000/api)
+
+## How to run seed
+
+```bash
+npx prisma db seed
+```
